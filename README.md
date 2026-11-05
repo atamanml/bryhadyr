@@ -38,6 +38,7 @@ Everything on that path is a file, a label or a cron line you can read. [How the
 | **Hooks** | Three small shell scripts: put the protocol and the session id into the context; remind **once** to close a big task; refuse a task that does not say where it came from |
 | **Session replies** | `stack/task_replies.py`: a timer that delivers your comment on a closed question-task to the session that asked |
 | **Notes in the tracker** | `stack/notes_mirror.py`: a timer that shows selected Obsidian notes inside OpenTodo, linked with their tasks |
+| **Tidying up** | Two skills and read-only audit tools that clean up sessions, worktrees and the vault: look, plan, act after you agree, verify. [docs/09-tidying.md](docs/09-tidying.md) |
 | **Project manager** | [Hermes Agent](https://github.com/NousResearch/hermes-agent) cron jobs on Claude: morning plan, silent midday ping, evening report, weekly review with hygiene. It sorts what the agents dumped, proposes deadlines, nags you in Telegram |
 | **Distribution** | A Claude Code plugin + committed templates (cloud sessions), a Hermes SOUL block (Telegram), project instructions (claude.ai). Change the file, push, everyone follows |
 
