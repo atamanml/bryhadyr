@@ -1,18 +1,18 @@
 {
   "extraKnownMarketplaces": {
-    "brygadyr": {
-      "source": { "source": "github", "repo": "OWNER/brygadyr" },
+    "bryhadyr": {
+      "source": { "source": "github", "repo": "OWNER/bryhadyr" },
       "autoUpdate": true
     }
   },
   "enabledPlugins": {
-    "brygadyr@brygadyr": true
+    "bryhadyr@bryhadyr": true
   },
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/brygadyr/session-start.sh", "timeout": 15 }
+          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/bryhadyr/session-start.sh", "timeout": 15 }
         ]
       }
     ]

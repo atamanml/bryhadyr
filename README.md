@@ -1,12 +1,12 @@
-<p align="center"><img src="docs/img/brygadyr.svg" width="120" alt=""></p>
+<p align="center"><img src="docs/img/bryhadyr.svg" width="120" alt=""></p>
 
-# brygadyr
+# bryhadyr
 
 **A foreman for you and your AI agents: one task tracker, one protocol, one project manager that nags.**
 
 You run several Claude Code sessions a day (cloud, server, laptop), a Telegram agent, maybe a tablet on the desk.
 Every one of them finds work that somebody has to do later, and every one of them forgets to write it down.
-`brygadyr` (Ukrainian *бригадир*, the foreman of a work crew) fixes that with three parts that already exist and one small protocol:
+`bryhadyr` (Ukrainian *бригадир*, the foreman of a work crew) fixes that with three parts that already exist and one small protocol:
 
 | Part | What it is | Who made it |
 |------|------------|-------------|
@@ -34,7 +34,7 @@ Every one of them finds work that somebody has to do later, and every one of the
 
 1. **Tracker:** `stack/` → `docker compose up -d`, create the owner account, enable *AI assistants* and create an `agent` token. [docs/01-opentodo.md](docs/01-opentodo.md)
 2. **MCP for agents:** local Claude Code (`claude mcp add`), cloud sessions (`.mcp.json` + environment secrets), claude.ai (custom connector over a public path). [docs/02-mcp.md](docs/02-mcp.md)
-3. **Protocol everywhere:** `claude plugin marketplace add <you>/brygadyr`, `claude plugin install brygadyr@brygadyr`; `scripts/sync.sh <repo>` for repos that run in the cloud. [docs/05-protocol.md](docs/05-protocol.md)
+3. **Protocol everywhere:** `claude plugin marketplace add <you>/bryhadyr`, `claude plugin install bryhadyr@bryhadyr`; `scripts/sync.sh <repo>` for repos that run in the cloud. [docs/05-protocol.md](docs/05-protocol.md)
 4. **Obsidian:** `ot vault init <vault>/OpenTodo` on the server, or the OpenTodo Obsidian plugin on your devices. [docs/03-obsidian.md](docs/03-obsidian.md)
 5. **Project manager:** `hermes/install.sh` adds the SOUL block, the MCP server and four cron jobs. [docs/04-pm-agent.md](docs/04-pm-agent.md)
 6. **Fill the tracker once:** run the harvest prompt in every project. [docs/06-harvest.md](docs/06-harvest.md)
@@ -61,7 +61,7 @@ with no deadline. Small tasks never touch the tracker. Full text: [plugin/PROTOC
 
 ## Support the OpenTodo author
 
-`brygadyr` is a thin layer; the heavy lifting is OpenTodo by **Raffaele Pizzari** ([@pixari](https://github.com/pixari)), AGPL-3.0, actively developed.
+`bryhadyr` is a thin layer; the heavy lifting is OpenTodo by **Raffaele Pizzari** ([@pixari](https://github.com/pixari)), AGPL-3.0, actively developed.
 If this setup saves you a subscription, send some of it his way: [GitHub Sponsors](https://github.com/sponsors/pixari) · [Buy Me a Coffee](https://buymeacoffee.com/pixari).
 As he puts it: using it, sharing it or reporting a bug helps just as much.
 

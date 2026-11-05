@@ -1,9 +1,9 @@
 ---
-name: brygadyr
-description: The owner's agent protocol (brygadyr). Use at the START of any non-trivial task and BEFORE the final answer of a big task (changes more than one file or takes over ~30 minutes) — record the task in OpenTodo (MCP «tasks»), write the Obsidian note, leave a summary with the checks that were run and the follow-up tasks. Also use when the user says "write it down", "put it in the tracker", "in Obsidian", "what's open in this project".
+name: bryhadyr
+description: The owner's agent protocol (bryhadyr). Use at the START of any non-trivial task and BEFORE the final answer of a big task (changes more than one file or takes over ~30 minutes) — record the task in OpenTodo (MCP «tasks»), write the Obsidian note, leave a summary with the checks that were run and the follow-up tasks. Also use when the user says "write it down", "put it in the tracker", "in Obsidian", "what's open in this project".
 ---
 
-# brygadyr: the agent protocol
+# bryhadyr: the agent protocol
 
 Full text: `${CLAUDE_PLUGIN_ROOT}/PROTOCOL.md` (read it if it is not in context yet; the SessionStart hook usually has put it there).
 

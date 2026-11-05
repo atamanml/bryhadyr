@@ -1,10 +1,10 @@
 {
-  "name": "brygadyr",
+  "name": "bryhadyr",
   "owner": { "name": "Mykhailo Atamanov" },
-  "metadata": { "description": "brygadyr: one task tracker for you and your AI agents (OpenTodo + agent protocol + PM agent)" },
+  "metadata": { "description": "bryhadyr: one task tracker for you and your AI agents (OpenTodo + agent protocol + PM agent)" },
   "plugins": [
     {
-      "name": "brygadyr",
+      "name": "bryhadyr",
       "source": "./plugin",
       "description": "Agent protocol: tasks in OpenTodo through MCP «tasks», an Obsidian note and a verified summary for every big task"
     }

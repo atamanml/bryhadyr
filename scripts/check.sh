@@ -11,4 +11,4 @@ done
 CLAUDE_PLUGIN_ROOT=plugin bash plugin/hooks/session-start.sh | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["hookSpecificOutput"]["hookEventName"]=="SessionStart" and d["hookSpecificOutput"]["additionalContext"]'
 OPENTODO_AGENT_TOKEN=x PROTOCOL_LANG=uk CLAUDE_PLUGIN_ROOT=plugin bash plugin/hooks/session-start.sh | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "configured" in c and "Протокол" in c'
 command -v shellcheck >/dev/null && shellcheck --severity=warning plugin/hooks/session-start.sh scripts/*.sh hermes/install.sh
-echo "brygadyr OK"
+echo "bryhadyr OK"

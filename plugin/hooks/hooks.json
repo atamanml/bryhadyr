@@ -1,5 +1,5 @@
 {
-  "description": "brygadyr: put the agent protocol into every session at start",
+  "description": "bryhadyr: put the agent protocol into every session at start",
   "hooks": {
     "SessionStart": [
       {
