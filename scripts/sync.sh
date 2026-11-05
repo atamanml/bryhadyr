@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# sync.sh — copy the plugin's protocol, hook, skill and .mcp.json into a repo as committed files, for sessions that install no plugins
-# (Claude Code cloud sessions). Usage: scripts/sync.sh /path/to/repo [owner/bryhadyr-fork]
+# sync.sh — copy the plugin's protocol, hooks, skill and an .mcp.json into a repo as committed files, for sessions that install no plugins
+# (Claude Code cloud sessions). The plugin itself registers no MCP server, so the repo gets templates/mcp.json (kept if it already has one). Usage: scripts/sync.sh /path/to/repo [owner/bryhadyr-fork]
 # Idempotent. Merges the marketplace, plugin and hook entries into the repo's .claude/settings.json, keeping what is there.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
@@ -8,10 +8,10 @@ R="${1:?usage: sync.sh /path/to/repo [owner/bryhadyr]}"
 FORK="${2:-OWNER/bryhadyr}"
 [ -d "$R" ] || { echo "no such directory: $R"; exit 1; }
 mkdir -p "$R/.claude/bryhadyr" "$R/.claude/skills/bryhadyr"
-cp "$HERE/plugin/PROTOCOL.md" "$HERE/plugin/hooks/session-start.sh" "$R/.claude/bryhadyr/"
+cp "$HERE/plugin/PROTOCOL.md" "$HERE/plugin/hooks/session-start.sh" "$HERE/plugin/hooks/stop-check.sh" "$HERE/plugin/hooks/task-check.sh" "$R/.claude/bryhadyr/"
 [ -f "$HERE/plugin/PROTOCOL.uk.md" ] && cp "$HERE/plugin/PROTOCOL.uk.md" "$R/.claude/bryhadyr/"
 cp "$HERE/plugin/skills/bryhadyr/SKILL.md" "$R/.claude/skills/bryhadyr/SKILL.md"
-cp "$HERE/plugin/.mcp.json" "$R/.mcp.json"
+if [ -f "$R/.mcp.json" ]; then echo "kept the existing $R/.mcp.json: it needs a \"tasks\" server, see templates/mcp.json"; else cp "$HERE/templates/mcp.json" "$R/.mcp.json"; fi
 python3 - "$R/.claude/settings.json" "$HERE/templates/claude-settings.json" "$FORK" <<'PY'
 import json, os, sys
 dst, src, fork = sys.argv[1], sys.argv[2], sys.argv[3]

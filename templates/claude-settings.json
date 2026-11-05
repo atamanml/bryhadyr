@@ -15,6 +15,21 @@
           { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/bryhadyr/session-start.sh", "timeout": 15 }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/bryhadyr/stop-check.sh", "timeout": 10 }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*(tasks|OpenTodo).*__create_tasks",
+        "hooks": [
+          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/bryhadyr/task-check.sh", "timeout": 10 }
+        ]
+      }
     ]
   }
 }

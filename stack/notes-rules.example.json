@@ -1,0 +1,10 @@
+{
+  "root": "10 - Projects",
+  "rules": [
+    ["Infra/*.md", "Infra"],
+    ["Product A/*.md", "Product A"],
+    ["Videos/*.md", "Videos"],
+    ["Hermes/*.md", "Hermes"],
+    ["finance-*.md", "Finance"]
+  ]
+}

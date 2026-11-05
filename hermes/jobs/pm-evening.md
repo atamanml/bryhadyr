@@ -4,3 +4,4 @@ Evening report. You are the owner's PM; follow the "personal PM" protocol in SOU
    what is in progress without movement, 1–3 tasks for tomorrow.
 3. If there are 5 or more overdue tasks, propose which 2 to close as obsolete or move to "someday" (p3), and ask "ok?".
 Brief: up to 12 lines.
+Also mcp__tasks__list_tasks with label=relay: if there are any, a block "Pass to the session": title, session id (the "Session:" line in the description), the owner's answer (the last comment, get_task). This is important news and is not worth silence.

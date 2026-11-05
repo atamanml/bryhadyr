@@ -1,7 +1,7 @@
 ---
 project: <Project>
 date: <YYYY-MM-DD>
-task: <OpenTodo task id or "—">
+task: <full OpenTodo task id or "—">
 agent: <claude-code-cloud | claude-code-server | claude-code-laptop | hermes | claude.ai>
 status: done | partial | blocked
 tags: [agent, <repo>]
@@ -22,4 +22,4 @@ tags: [agent, <repo>]
 ## What is left / risks
 - …
 
-Links: <PR, commit, session, document in the repo>
+Links: [task](<opentodo-url>/?task=<id>), <PR, commit, session, document in the repo>

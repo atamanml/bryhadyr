@@ -1,10 +1,25 @@
 {
-  "description": "bryhadyr: put the agent protocol into every session at start",
+  "description": "bryhadyr: put the agent protocol into every session at start, remind to close a big task, check the tasks agents create",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\"", "timeout": 15 }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/stop-check.sh\"", "timeout": 10 }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*(tasks|OpenTodo).*__create_tasks",
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/task-check.sh\"", "timeout": 10 }
         ]
       }
     ]
