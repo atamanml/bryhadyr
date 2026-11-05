@@ -34,3 +34,10 @@ model_aliases:
     provider: anthropic
 cron:
   wrap_response: false
+# The alias `default` (back to your everyday chat model after `/model pm`) is not here because the model is yours:
+# set PM_DEFAULT_MODEL and PM_DEFAULT_PROVIDER in ~/.hermes/.env and hermes/install.sh adds
+#   model_aliases.default: {model: $PM_DEFAULT_MODEL, provider: $PM_DEFAULT_PROVIDER}
+#   moa.presets.default.enabled: false
+# Why the second line: Hermes matches a Mixture-of-Agents preset before any alias, and its built-in preset is also called `default`,
+# so `/model default` would start a multi-model ensemble (expensive) instead of your model. Switching the preset off makes the alias win;
+# `--provider moa` still reaches the ensemble.

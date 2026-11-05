@@ -1,6 +1,7 @@
 # 3 · Obsidian: notes and the task mirror
 
-Two independent links between the tracker and your vault.
+Three independent links between the tracker and your vault: tasks as Markdown (two-way, `ot vault`), agent notes (written by sessions, below),
+and those notes shown inside OpenTodo (one-way, [docs/08-notes-in-opentodo.md](08-notes-in-opentodo.md)).
 
 ## Tasks as Markdown (`ot vault`)
 
@@ -42,8 +43,13 @@ line from any note to the tracker as a task.
 ## Agent notes
 
 The protocol makes every big task end with a note at `obsidian/10 - Projects/<Project>/<YYYY-MM-DD> <Title>.md` (template in
-`templates/obsidian-note.md`). Notes live in the infra repo and reach the vault through its deploy; the task in OpenTodo carries the note's
-path in the closing comment, so the tablet shows a link and Obsidian holds the full text. A Dataview query for an overview:
+`templates/obsidian-note.md`). Notes live in the infra repo and reach the vault through its deploy. Two lines tie a note to its task:
+
+- `task: <full task id>` in the note's frontmatter, and a link `[task](<opentodo-url>/?task=<id>)` in its last line;
+- `Note: 10 - Projects/<Project>/<file>.md` in the task's description (and in the closing comment).
+
+With the notes mirror running, the note also appears in OpenTodo (Notes, same project), rendered, and the task gets a chip that opens it in
+Obsidian. Without it the tablet shows the path and Obsidian holds the full text. A Dataview query for an overview:
 
 ```dataview
 TABLE project, status, agent, task FROM "10 - Projects" WHERE contains(tags, "agent") SORT date DESC

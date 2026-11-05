@@ -1,0 +1,10 @@
+[Unit]
+Description=Pass the owner's answers on closed OpenTodo tasks to the sessions that asked (stack/task_replies.py)
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+# @REPO@ is replaced by scripts/install-timers.sh with the path of this checkout.
+# Optional settings (OPENTODO_LOCAL_URL, BRYHADYR_LANG) go into ~/.config/bryhadyr/env.
+EnvironmentFile=-%h/.config/bryhadyr/env
+ExecStart=/usr/bin/python3 @REPO@/stack/task_replies.py poll

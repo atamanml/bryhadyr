@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "tasks": {
-      "type": "http",
-      "url": "${OPENTODO_MCP_URL:-http://127.0.0.1:8080/mcp}",
-      "headers": { "Authorization": "Bearer ${OPENTODO_AGENT_TOKEN}" }
-    }
-  }
-}
