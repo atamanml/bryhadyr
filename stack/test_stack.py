@@ -66,7 +66,7 @@ class RuleTests(unittest.TestCase):
 
     def test_secret_scanner(self):
         self.assertTrue(nm.SECRET.search("token ot_" + "a" * 20))
-        self.assertTrue(nm.SECRET.search("-----BEGIN RSA PRIVATE KEY-----"))
+        self.assertTrue(nm.SECRET.search("-----BEGIN RSA " + "PRIVATE KEY-----"))
         self.assertFalse(nm.SECRET.search("nothing here"))
 
     def test_task_id_in_frontmatter(self):
