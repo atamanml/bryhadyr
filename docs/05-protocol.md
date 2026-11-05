@@ -8,7 +8,7 @@ The single source of truth is `plugin/PROTOCOL.md` (and `PROTOCOL.uk.md`). Every
 |---------|-----------|--------------|
 | **Claude Code on a server or laptop** | this repo as a plugin marketplace: `claude plugin marketplace add <you>/bryhadyr && claude plugin install bryhadyr@bryhadyr --scope user`; the plugin brings the skill, the `SessionStart` hook and the `tasks` MCP server | `claude plugin update bryhadyr@bryhadyr` (a deploy hook on the server; `autoUpdate: true` in the marketplace entry for interactive use) |
 | **Claude Code cloud sessions** | cloud sessions do not install plugins declared in a repo, but they do read committed files: `scripts/sync.sh <repo>` copies the hook, the skill, the protocol and `.mcp.json` into `.claude/` of any repo; commit them there | the infra repo: next session; other repos: the hook fetches a fresher `PROTOCOL.md` through `gh` when `PROTOCOL_SOURCE_REPO=<you>/bryhadyr` is set and the session can read it, otherwise the synced copy |
-| **Hermes** | the SOUL block written by `hermes/install.sh` (PM rules + a copy of the protocol) | `hermes/install.sh --soul-only` from your deploy |
+| **Hermes** | the SOUL block written by `hermes/install.sh` (PM rules + the path of the protocol file) | `hermes/install.sh --soul-only` from your deploy |
 | **claude.ai** | project instructions = sections 1–4 of `PROTOCOL.md`, connector `tasks` enabled | by hand, rarely |
 
 Environment variables the hook and `.mcp.json` understand: `OPENTODO_MCP_URL` (default `http://127.0.0.1:8080/mcp`), `OPENTODO_AGENT_TOKEN`,

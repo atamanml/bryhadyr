@@ -10,5 +10,8 @@ for f in .claude-plugin/marketplace.json plugin/.claude-plugin/plugin.json plugi
 done
 CLAUDE_PLUGIN_ROOT=plugin bash plugin/hooks/session-start.sh | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["hookSpecificOutput"]["hookEventName"]=="SessionStart" and d["hookSpecificOutput"]["additionalContext"]'
 OPENTODO_AGENT_TOKEN=x PROTOCOL_LANG=uk CLAUDE_PLUGIN_ROOT=plugin bash plugin/hooks/session-start.sh | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "configured" in c and "Протокол" in c'
+T="$(mktemp -d)"; echo '{"mcpServers":{"tasks":{}}}' > "$T/.claude.json"
+HOME="$T" OPENTODO_AGENT_TOKEN= CLAUDE_PLUGIN_ROOT=plugin bash plugin/hooks/session-start.sh | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "user scope" in c'
+rm -rf "$T"
 command -v shellcheck >/dev/null && shellcheck --severity=warning plugin/hooks/session-start.sh scripts/*.sh hermes/install.sh
 echo "bryhadyr OK"

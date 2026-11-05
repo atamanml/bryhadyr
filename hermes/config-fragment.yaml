@@ -1,6 +1,8 @@
 # Merged into ~/.hermes/config.yaml by hermes/install.sh (deep merge; keys of the same name are replaced).
 # PM cron jobs run on Claude (provider anthropic, ANTHROPIC_API_KEY in ~/.hermes/.env); chats keep the default model.
-# `tasks` = your OpenTodo; the agent token is read from ~/.hermes/.env (OPENTODO_AGENT_TOKEN) and substituted at install time.
+# `tasks` = your OpenTodo. The URL is substituted at install time; the agent token stays in ~/.hermes/.env (OPENTODO_AGENT_TOKEN)
+# and the config keeps the literal ${OPENTODO_AGENT_TOKEN}. `tools.include` limits Hermes to the tools the PM needs, so the full
+# schema list does not ride on every Telegram message.
 mcp_servers:
   tasks:
     url: "${OPENTODO_MCP_URL}"
@@ -8,6 +10,21 @@ mcp_servers:
       Authorization: "Bearer ${OPENTODO_AGENT_TOKEN}"
     timeout: 60
     connect_timeout: 30
+    tools:
+      include:
+        - today_summary
+        - list_projects
+        - list_tasks
+        - get_task
+        - search_tasks
+        - create_tasks
+        - update_tasks
+        - complete_tasks
+        - move_tasks
+        - schedule_tasks
+        - add_comment
+        - create_sections
+        - create_label
 model_aliases:
   pm:
     model: claude-sonnet-5-5

@@ -1,4 +1,4 @@
-# Agent protocol · v1
+# Agent protocol · v2
 
 The single source of truth for every AI agent that works for the owner: Claude Code (cloud, server, laptop), the Telegram agent (Hermes), claude.ai chats.
 To change the rules for everyone, change this file and push: the plugin, the committed templates and the Hermes SOUL block carry it.
@@ -85,6 +85,20 @@ Notes and task titles are written in the owner's language; code, commits and fil
 
 ## 6. Hermes (Telegram) and claude.ai
 
-- Hermes: this protocol lives in the "Protocol: personal PM" block of `SOUL.md` (`hermes/install.sh`); it writes notes straight into the vault folder.
+- Hermes: the "Protocol: personal PM" block of `SOUL.md` (`hermes/install.sh`) points at this file instead of copying it, because the SOUL rides on every Telegram message; it writes notes straight into the vault folder.
 - claude.ai (web / apps): the project instructions of your claude.ai project = sections 1–4 of this file; the `tasks` connector enabled.
   Both are updated by hand after a protocol change (rare).
+
+## 7. Chat orchestrator and cost
+
+The owner sets the goal, the chat drives it to a result: it works things out itself first, then acts, and asks only what is the owner's to decide.
+Cost ≈ calls × average context × model price.
+
+- **One task = one session.** Separate work (another repository, its own PR) goes to a new session with a brief; small things stay in this chat.
+  A session's report is a claim: the orchestrator checks the result and the diff.
+- **Hand over with a file, not with compaction.** Context over 250k → a 1–2 KB handoff: done, next, files `path:lines`, what was tried and why it failed, open questions.
+- **Subagents do not save money:** 2–3 per task, one at a time, brief ≤ 2 KB (task, files, definition of done). At 180k context or 80 calls a subagent hands its work in.
+- **Cache:** do not change `CLAUDE.md`, plugins, MCP servers or the model in the middle of a task. Commands over 3 minutes run in the background, not in a wait loop.
+- **Read ranges, edit with patches,** fold test output to the summary and the failures, keep reports short.
+- **Models:** a mid-size model for implementation and routine; the larger one for diff review and numeric logic; the strongest for 1–2 architectural forks; the smallest for search.
+- **Verification is not trimmed:** "done" only after a run. A saving that causes over 20 % rework is fake.

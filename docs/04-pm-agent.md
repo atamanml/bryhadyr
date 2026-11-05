@@ -14,7 +14,8 @@ Anthropic API; the rest of Hermes keeps whatever cheap model you use for chat.
 | `pm-weekly` | Sunday 18:00 | Sonnet 5.5 | what got done, what is stuck, projects without movement, 3 proposals, deadlines to confirm, a short block for each family member |
 
 Rules that keep it bearable (SOUL block, `hermes/SOUL-pm.md`): never invent tasks; deadlines are proposals until you say "ok"; overdue → one line a day;
-no empty reports; at most 3 unprompted messages a day; one pass over the tools per run.
+no empty reports (a quiet cron run answers exactly `[SILENT]`, so Hermes sends nothing); at most 3 unprompted messages a day; one pass over the tools per run.
+The prompts name the OpenTodo tools `mcp__tasks__*`.
 
 ## Cost
 
@@ -29,20 +30,33 @@ Sonnet 5.5 is 2 / 10 USD per million tokens (cache reads 0.20), Haiku 5.5 0.10 /
 | PM chats on Claude (`/model pm`), optional | | | 5–10 |
 | **total** | | | **10–20** |
 
+Without `ANTHROPIC_API_KEY` the jobs run on Hermes' default model instead and cost whatever that model costs.
 Watch it in the Anthropic console the first month. Too high → move the evening job to `pm-cheap`, then trim the prompts' tool calls.
 
 ## Install
 
 ```bash
-# ~/.hermes/.env: ANTHROPIC_API_KEY, OPENTODO_AGENT_TOKEN, OPENTODO_MCP_URL=http://127.0.0.1:8080/mcp, TELEGRAM_ALLOWED_USERS
+# ~/.hermes/.env: OPENTODO_MCP_URL=http://127.0.0.1:8080/mcp, TELEGRAM_ALLOWED_USERS, OPENTODO_AGENT_TOKEN
+# (copied from stack/.env if missing), ANTHROPIC_API_KEY (optional)
 hermes/install.sh                 # SOUL block, config fragment, 4 cron jobs, gateway restart
 PROTOCOL_LANG=uk hermes/install.sh   # Ukrainian SOUL block and prompts
 ~/.hermes/hermes-agent/venv/bin/hermes cron list
 ~/.hermes/hermes-agent/venv/bin/hermes cron run <id-of-pm-morning>     # try it now
 ```
 
-If your Hermes build's `cron create` has no `--prompt`, the installer says so; create the four jobs in the Hermes chat from `hermes/jobs/*.md`.
-Re-running the installer refreshes the SOUL block and the config; `hermes/install.sh --soul-only` is what a deploy hook calls after a protocol change.
+What the installer does and why:
+
+- **Jobs.** `hermes cron create` takes the prompt as a positional argument and has no model aliases, so the installer passes `--model` and
+  `--provider` explicitly. Re-running updates existing jobs (`hermes cron edit`) instead of skipping them.
+- **Without `ANTHROPIC_API_KEY`** the jobs are created without a model override and run on the default Hermes model. Add the key to
+  `~/.hermes/.env` and re-run to move them to Claude (Sonnet 5.5 for morning, evening and weekly; Haiku 5.5 for midday).
+- **`config.yaml`** is merged with `ruamel.yaml`, so your comments and formatting survive; a changed file is backed up as
+  `config.yaml.bak-pm-<timestamp>` first.
+- **The token stays in `.env`.** The config keeps the literal `${OPENTODO_AGENT_TOKEN}`; Hermes expands it at run time.
+- **Only 13 OpenTodo tools.** `tools.include` in `hermes/config-fragment.yaml` limits Hermes to the tools the PM needs, so the full schema list
+  does not ride on every Telegram message.
+- **The SOUL block points at the protocol file** (`plugin/PROTOCOL.md` or `.uk.md`) instead of embedding a copy, for the same reason.
+- `hermes/install.sh --soul-only` is what a deploy hook calls after a protocol change; it restarts the gateway only when the SOUL block changed.
 
 ## Skill, profile, or what?
 
