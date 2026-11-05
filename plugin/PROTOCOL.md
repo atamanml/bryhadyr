@@ -156,3 +156,12 @@ Cost ≈ calls × average context × model price.
 - **Read ranges, edit with patches,** fold test output to the summary and the failures, keep reports short.
 - **Models:** a mid-size model for implementation and routine; the larger one for diff review and numeric logic; the strongest for 1–2 architectural forks; the smallest for search.
 - **Verification is not trimmed:** "done" only after a run. A saving that causes over 20 % rework is fake.
+
+### Orchestrator and worker sessions
+
+One orchestrator chat leads a large piece of work, and the other sessions work for it. A session you opened directly is its own orchestrator.
+
+- **Orchestrator:** keeps the plan, starts worker sessions with a brief, and checks their results itself (the diff, CI, a run). It brings doubts and your decisions to you. It merges to the main branch and publishes only on your word.
+- **Worker session (started with a brief):** does only the brief. If it finds something else, it does not do it and tells the orchestrator in one line. A decision that is yours goes through the orchestrator or a `waiting` task. It does not merge PRs or start sessions unless the brief says so. It ends with a report: the PR or commit, what was verified by running it, what was not.
+
+Skill: `orchestrator`.

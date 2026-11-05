@@ -57,3 +57,7 @@ Set them where the hooks run: `~/.config/environment.d/` on a Linux desktop, the
 - The SessionStart hook pulling the repo's open tasks through OpenTodo's REST API so the agent starts with them in context without a tool call.
 - A `Stop` hook that posts the session summary itself instead of reminding the agent to.
 - Seeing edits made through `sed -i` and shell redirects in the Stop hook (it reads tool calls, not the file system).
+
+## Orchestrator and worker sessions
+
+A large piece of work has one orchestrator chat: it plans, starts worker sessions with a short brief and checks what they report by running it. Workers stay inside their brief and never merge. The roles are in section 7 of the protocol, and the `orchestrator` skill walks through them.
