@@ -4,7 +4,7 @@
 # Needs in ~/.hermes/.env: OPENTODO_MCP_URL (e.g. http://127.0.0.1:8080/mcp), TELEGRAM_ALLOWED_USERS, OPENTODO_AGENT_TOKEN
 # (copied from stack/.env when ~/.hermes/.env lacks it). ANTHROPIC_API_KEY is optional: with it the jobs run on Claude, without it
 # on the default Hermes model; add the key and re-run to move them to Claude.
-# Optional in ~/.hermes/.env: PM_DEFAULT_MODEL and PM_DEFAULT_PROVIDER (your everyday chat model, e.g. deepseek/deepseek-v4-flash + openrouter).
+# Optional in ~/.hermes/.env: PM_DEFAULT_MODEL and PM_DEFAULT_PROVIDER (your everyday chat model, as Hermes names it, e.g. <model-id> and <provider>).
 # They add the alias `default`, so `/model default` returns to it after `/model pm`, and switch off Hermes' built-in Mixture-of-Agents
 # preset that is also called `default` (a preset wins over an alias; see hermes/config-fragment.yaml).
 # Env: PROTOCOL_LANG=uk picks the Ukrainian SOUL block and prompts. `--soul-only` refreshes the SOUL block alone (for deploy hooks).
