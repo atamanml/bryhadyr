@@ -1,0 +1,32 @@
+# OpenTodo (https://github.com/OpenTodoApp/OpenTodo): the task tracker, with the MCP endpoint for agents and two-way Obsidian sync.
+# One Go binary, SQLite in the volume, ~20 MB idle. Binds to 127.0.0.1 only; put Tailscale, Caddy or nginx in front (docs/01-opentodo.md).
+# The MCP presets below are first-start presets; afterwards the switches in Settings win.
+name: opentodo
+
+services:
+  app:
+    image: ghcr.io/opentodoapp/opentodo:stable
+    container_name: opentodo
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${OPENTODO_PORT:-8080}:8080"
+    environment:
+      OPENTODO_BASE_URL: ${OPENTODO_BASE_URL:?set it in .env (https://<your-host>)}
+      OPENTODO_SETUP_TOKEN: ${OPENTODO_SETUP_TOKEN:?16+ chars, needed once to create the owner account}
+      OPENTODO_SETUP_CODE: required
+      OPENTODO_MCP: "true"
+      OPENTODO_MCP_WRITES: "true"
+      OPENTODO_TRASH_RETENTION_DAYS: "30"
+      OPENTODO_LOG_LEVEL: info
+    volumes:
+      - opentodo_data:/data
+    healthcheck:
+      test: ["CMD", "/opentodo", "healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    mem_limit: 128m
+
+volumes:
+  opentodo_data:

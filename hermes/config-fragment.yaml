@@ -1,0 +1,19 @@
+# Merged into ~/.hermes/config.yaml by hermes/install.sh (deep merge; keys of the same name are replaced).
+# PM cron jobs run on Claude (provider anthropic, ANTHROPIC_API_KEY in ~/.hermes/.env); chats keep the default model.
+# `tasks` = your OpenTodo; the agent token is read from ~/.hermes/.env (OPENTODO_AGENT_TOKEN) and substituted at install time.
+mcp_servers:
+  tasks:
+    url: "${OPENTODO_MCP_URL}"
+    headers:
+      Authorization: "Bearer ${OPENTODO_AGENT_TOKEN}"
+    timeout: 60
+    connect_timeout: 30
+model_aliases:
+  pm:
+    model: claude-sonnet-5-5
+    provider: anthropic
+  pm-cheap:
+    model: claude-haiku-5-5
+    provider: anthropic
+cron:
+  wrap_response: false

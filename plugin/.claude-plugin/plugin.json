@@ -1,0 +1,5 @@
+{
+  "name": "brygadyr",
+  "description": "Agent protocol: tasks in OpenTodo through MCP «tasks», an Obsidian note and a verified summary for every big task",
+  "author": { "name": "Mykhailo Atamanov" }
+}

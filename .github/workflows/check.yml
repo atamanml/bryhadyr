@@ -1,0 +1,16 @@
+---
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install --quiet pyyaml
+      - run: bash scripts/check.sh
+      - name: docker compose config
+        run: cp stack/.env.example stack/.env && sed -i 's/^OPENTODO_SETUP_TOKEN=.*/OPENTODO_SETUP_TOKEN=placeholder-placeholder/' stack/.env && docker compose -f stack/docker-compose.yml --env-file stack/.env config --quiet
