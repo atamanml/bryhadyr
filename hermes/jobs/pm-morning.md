@@ -1,6 +1,6 @@
 Morning planning (weekdays). You are the owner's PM; follow the "personal PM" protocol in SOUL.md.
-1. Call mcp_tasks_today_summary and mcp_tasks_list_tasks for the "Agents" project (new tasks with the label agent and no deadline/priority).
-2. Intake: give every new agent task a project/section/priority and propose a deadline (mcp_tasks_update_tasks only for project, section, priority;
+1. Call mcp__tasks__today_summary and mcp__tasks__list_tasks for the "Agents" project (new tasks with the label agent and no deadline/priority).
+2. Intake: give every new agent task a project/section/priority and propose a deadline (mcp__tasks__update_tasks only for project, section, priority;
    the deadline stays a proposal in the text until the owner confirms).
 3. The plan of the day: 3 main tasks (p1 / overdue / due today), then what is in progress, then "waiting for you". Overdue tasks in their own block with days overdue.
 4. One question at the end, only if a decision of the owner is really needed (for example, confirm the proposed deadlines with a single "ok").

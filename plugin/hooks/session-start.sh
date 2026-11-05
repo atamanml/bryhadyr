@@ -3,7 +3,7 @@
 #   * the plugin (server, laptop): ROOT = ${CLAUDE_PLUGIN_ROOT}
 #   * a committed copy in a repo (cloud sessions install no plugins): ROOT = <repo>/.claude/bryhadyr
 # Prints JSON with `additionalContext`: the protocol (PROTOCOL.md next to this script, PROTOCOL.<lang>.md when PROTOCOL_LANG is set),
-# the repo name and whether the OpenTodo MCP token is present. Optional live refresh: with PROTOCOL_SOURCE_REPO=owner/repo and a working
+# the repo name and whether the OpenTodo MCP server is reachable from here (registered in user scope, or the token is in the environment). Optional live refresh: with PROTOCOL_SOURCE_REPO=owner/repo and a working
 # `gh`, a fresher PROTOCOL.md is fetched from that repo's default branch (≤ 5 s), so a push reaches machines whose copy is behind.
 # No secrets are read or printed.
 set -u
@@ -17,17 +17,25 @@ if [ -n "${PROTOCOL_SOURCE_REPO:-}" ] && command -v gh >/dev/null 2>&1; then
   live="$(timeout 5 gh api "repos/${PROTOCOL_SOURCE_REPO}/contents/plugin/${file}" -H 'Accept: application/vnd.github.raw' 2>/dev/null)" || live=""
   if [ -n "$live" ] && [ "$live" != "$protocol" ]; then protocol="$live"; origin="fresh copy from ${PROTOCOL_SOURCE_REPO}"; fi
 fi
-if [ -n "${OPENTODO_AGENT_TOKEN:-}" ]; then
+# a working python: `python3` may be a dead stub (Windows Store alias), so try each candidate and run it once
+PY=""
+for p in python3 python py; do
+  if command -v "$p" >/dev/null 2>&1 && "$p" -c 'pass' >/dev/null 2>&1; then PY="$p"; break; fi
+done
+user_scope=""
+if [ -n "$PY" ] && [ -f "$HOME/.claude.json" ]; then
+  user_scope="$("$PY" -c 'import json,os; print("yes" if "tasks" in json.load(open(os.path.expanduser("~/.claude.json"),encoding="utf-8")).get("mcpServers",{}) else "")' 2>/dev/null)"
+fi
+if [ -n "$user_scope" ]; then
+  mcp="MCP «tasks» is configured (user scope): write tasks directly."
+elif [ -n "${OPENTODO_AGENT_TOKEN:-}" ]; then
   mcp="MCP «tasks» is configured (${OPENTODO_MCP_URL:-http://127.0.0.1:8080/mcp}): write tasks directly."
 else
   mcp="OPENTODO_AGENT_TOKEN is not set: MCP «tasks» is unavailable here. Put tasks in the final answer as an Obsidian Tasks list under «## ${repo}» (protocol section 3, fallback), or use the claude.ai connector if the session has one."
 fi
 ctx="$(printf '## Agent protocol (bryhadyr; repo: %s; %s)\n%s\n\n%s\n' "$repo" "$origin" "$mcp" "$protocol")"
-if command -v python3 >/dev/null 2>&1; then
-  python3 - "$ctx" <<'PY'
-import json, sys
-print(json.dumps({"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": sys.argv[1]}}, ensure_ascii=False))
-PY
+if [ -n "$PY" ]; then
+  PYTHONIOENCODING=utf-8 "$PY" -c 'import json, sys; print(json.dumps({"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": sys.argv[1]}}, ensure_ascii=False))' "$ctx"
 else
   printf '%s\n' "$ctx"     # plain stdout is accepted as context for SessionStart too
 fi
