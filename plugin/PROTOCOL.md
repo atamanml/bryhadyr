@@ -1,4 +1,4 @@
-# Agent protocol · v3
+# Agent protocol · v4
 
 The single source of truth for every AI agent that works for the owner: Claude Code (cloud, server, laptop), the Telegram agent (Hermes), claude.ai chats.
 To change the rules for everyone, change this file and push: the plugin, the committed templates and the Hermes SOUL block carry it.
@@ -143,13 +143,43 @@ A note is mirrored into OpenTodo with at most 19 000 characters, so keep it shor
 - claude.ai (web / apps): the project instructions of your claude.ai project = sections 1–4 of this file; the `tasks` connector enabled.
   Both are updated by hand after a protocol change (rare).
 
-## 7. Chat orchestrator and cost
+## 7. Main chat, child sessions and cost
 
 The owner sets the goal, the chat drives it to a result: it works things out itself first, then acts, and asks only what is the owner's to decide.
 Cost ≈ calls × average context × model price.
 
-- **One task = one session.** Separate work (another repository, its own PR) goes to a new session with a brief; small things stay in this chat.
-  A session's report is a claim: the orchestrator checks the result and the diff.
+### Main chat and child sessions
+
+Every direction (a product, a repository, an area of life) has one main chat, in its own folder. The main chat talks, thinks, plans and checks.
+Child sessions do the work. Work done inside the main chat drags its context along and loses it, so the work goes out.
+
+- **Actions = a child session.** As soon as the conversation turns from discussion to action (edits, commits, deploy, setup, browser work,
+  multi-step research), the main chat starts a child session itself, in the same turn, without asking. In the Claude desktop app that is
+  `start_session` with `initiation "user_asked"`: the owner gave this as a standing instruction in their global `CLAUDE.md`
+  (`templates/CLAUDE.global.md`, `docs/10-main-chat.md`), so it is not an offer card. `context "fresh"` with a brief; `"fork"` when the work
+  leans on this conversation. `start_session` and the other session tools may be deferred: if they are not in your tool list, load them through ToolSearch first and treat them as unavailable only after that fails.
+- **Stays in the main chat:** an answer, a discussion, reading to answer (up to ~5 calls), a one-line edit, checking the children's results.
+  The owner said "do it here": do it here.
+- **Independent jobs:** each in its own session, at most three at once. Pieces of one job go to subagents.
+- **Start refused** (the owner writes from a remote client, or the app does not allow it): a background subagent (`Agent` with
+  `run_in_background`) and one line to the owner that it is a subagent, not a child session.
+- **Worker session:** its first message begins with "Worker session:" («Робоча сесія:» in a Ukrainian setup). Every brief begins with these
+  words and is at most 2 KB: the task, files as `path:lines`, "done when". The worker does only the brief. It found something else: it does
+  not do it and tells the main chat in one line. A decision that is the owner's goes through the main chat or a `waiting` task. It does not
+  merge PRs and does not start sessions. It ends with a report: the PR or commit, what was verified by running it, what was not.
+- **A report is a claim.** The main chat checks it itself (the diff, CI, a run of its own). It merges to the main branch and publishes only on
+  the owner's word. A session the owner opened directly is its own main chat.
+- **Direction memory:** `HANDOFF.md` in the direction's folder. A new chat reads it first, then the transcripts on the topic (`list_sessions`,
+  `search_session_transcripts`). The main chat updates it at the end of a topic and leaves a line "Next step: …". Do not ask the owner what is
+  in `HANDOFF.md` or in other chats.
+- **A chat without a folder:** if the topic belongs to a direction, switch to its folder at the start (`change_directory`). The table of
+  directions (name → folder) lives in the owner's global `CLAUDE.md`, not in this file.
+- **A weak server:** keep the number of long-lived sessions there low and check free memory before starting one.
+
+Skill: `orchestrator`.
+
+### Cost
+
 - **Hand over with a file, not with compaction.** Context over 250k → a 1–2 KB handoff: done, next, files `path:lines`, what was tried and why it failed, open questions.
 - **Subagents do not save money:** 2–3 per task, one at a time, brief ≤ 2 KB (task, files, definition of done). At 180k context or 80 calls a subagent hands its work in.
 - **Cache:** do not change `CLAUDE.md`, plugins, MCP servers or the model in the middle of a task. Commands over 3 minutes run in the background, not in a wait loop.

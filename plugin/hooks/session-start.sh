@@ -41,6 +41,15 @@ elif [ -n "${OPENTODO_AGENT_TOKEN:-}" ] && [ -f "$top/.mcp.json" ]; then
 else
   mcp="MCP «tasks» is not registered here (neither user scope nor a repo .mcp.json with OPENTODO_AGENT_TOKEN). Put tasks in the final answer as an Obsidian Tasks list under «## ${repo}» (protocol section 3, fallback), or use the claude.ai connector if the session has one."
 fi
+# a chat outside any repository: a direction folder (CLAUDE.md or HANDOFF.md inside) is fine and gets no warning;
+# any other folder gets a hint to move into the direction's folder (protocol section 7)
+if ! git rev-parse --show-toplevel >/dev/null 2>&1 && [ ! -f CLAUDE.md ] && [ ! -f HANDOFF.md ]; then
+  if [ "${PROTOCOL_LANG:-}" = "uk" ]; then
+    mcp="$mcp Чат без папки напрямку ($(pwd)): пам'ять (CLAUDE.md, HANDOFF.md) сюди не підтягнеться. Якщо тема про напрямок, перейди в його папку через change_directory (таблиця напрямків у глобальному CLAUDE.md, розділ 7 протоколу) і прочитай HANDOFF.md."
+  else
+    mcp="$mcp A chat without a direction folder ($(pwd)): its memory (CLAUDE.md, HANDOFF.md) is not loaded here. If the topic belongs to a direction, switch to its folder with change_directory (the table of directions is in the global CLAUDE.md, protocol section 7) and read HANDOFF.md."
+  fi
+fi
 # the session id arrives in the hook's JSON on stdin (not when run by hand from a terminal)
 input=""
 [ -t 0 ] || IFS= read -r -t 2 input || true
