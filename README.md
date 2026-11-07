@@ -39,6 +39,7 @@ Everything on that path is a file, a label or a cron line you can read. [How the
 | **Session replies** | `stack/task_replies.py`: a timer that delivers your comment on a closed question-task to the session that asked |
 | **Notes in the tracker** | `stack/notes_mirror.py`: a timer that shows selected Obsidian notes inside OpenTodo, linked with their tasks |
 | **Tidying up** | Two skills and read-only audit tools that clean up sessions, worktrees and the vault: look, plan, act after you agree, verify. [docs/09-tidying.md](docs/09-tidying.md) |
+| **Main chat per direction** | One chat per direction talks, plans and checks; the work goes to child sessions the chat starts itself, with a brief that begins "Worker session:". A `HANDOFF.md` per folder is the direction's memory; `scripts/install_global_md.py` puts the standing instruction and your table of directions into `~/.claude/CLAUDE.md`. [docs/10-main-chat.md](docs/10-main-chat.md) |
 | **Project manager** | [Hermes Agent](https://github.com/NousResearch/hermes-agent) cron jobs on Claude: morning plan, silent midday ping, evening report, weekly review with hygiene. It sorts what the agents dumped, proposes deadlines, nags you in Telegram |
 | **Distribution** | A Claude Code plugin + committed templates (cloud sessions), a Hermes SOUL block (Telegram), project instructions (claude.ai). Change the file, push, everyone follows |
 

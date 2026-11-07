@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check.sh — validate the manifests, the three hooks (with their tests), the Python scripts of stack/ (with their tests) and the shell scripts.
+# check.sh — validate the manifests, the three hooks (with their tests), the global CLAUDE.md installer, the Python scripts of stack/ (with their tests) and the shell scripts.
 # Run in CI and before a release. Needs bash, python3; shellcheck and PyYAML are used when present.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -28,6 +28,29 @@ echo '{"mcpServers":{"tasks":{}}}' > "$T/home/.claude.json"
 # a repository from BRYHADYR_UNTRACKED_REPOS is left alone
 ( cd "$T/repo" && HOME="$T/home" BRYHADYR_UNTRACKED_REPOS='repo' BRYHADYR_UNTRACKED_HINT='Put tasks in notes.md.' CLAUDE_PLUGIN_ROOT="$OLDPWD/plugin" bash "$OLDPWD/plugin/hooks/session-start.sh" </dev/null ) \
   | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "not tracked" in c and "notes.md" in c, c'
+
+# outside a repository: a bare folder gets the hint, a direction folder (CLAUDE.md or HANDOFF.md) does not; Ukrainian twin of the hint
+mkdir -p "$T/bare" "$T/direction"; : > "$T/direction/HANDOFF.md"
+( cd "$T/bare" && HOME="$T/home" GIT_CEILING_DIRECTORIES="$T" CLAUDE_PLUGIN_ROOT="$OLDPWD/plugin" bash "$OLDPWD/plugin/hooks/session-start.sh" </dev/null ) \
+  | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "without a direction folder" in c and "change_directory" in c, c'
+( cd "$T/bare" && HOME="$T/home" GIT_CEILING_DIRECTORIES="$T" PROTOCOL_LANG=uk CLAUDE_PLUGIN_ROOT="$OLDPWD/plugin" bash "$OLDPWD/plugin/hooks/session-start.sh" </dev/null ) \
+  | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "Чат без папки напрямку" in c, c'
+( cd "$T/direction" && HOME="$T/home" GIT_CEILING_DIRECTORIES="$T" CLAUDE_PLUGIN_ROOT="$OLDPWD/plugin" bash "$OLDPWD/plugin/hooks/session-start.sh" </dev/null ) \
+  | python3 -c 'import json,sys; c=json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"]; assert "direction folder" not in c, c'
+
+echo "== global CLAUDE.md installer"
+G="$T/global/CLAUDE.md"; mkdir -p "$T/global"; printf '# mine\nkeep this\n' > "$G"
+python3 scripts/install_global_md.py "$G" >/dev/null
+python3 scripts/install_global_md.py "$G" | grep -q 'already up to date'          # second run changes nothing
+sed -i 's/Actions = a child session/EDITED INSIDE/; s/<direction name>/My Shop/' "$G"; printf '\n## after\ntail stays\n' >> "$G"
+python3 scripts/install_global_md.py "$G" >/dev/null                                 # the block is replaced, the rest is kept
+grep -q 'Actions = a child session' "$G" && ! grep -q 'EDITED INSIDE' "$G" && grep -q 'keep this' "$G" && grep -q 'tail stays' "$G"
+grep -q 'My Shop' "$G"                                                               # the table of directions is yours, kept
+[ "$(grep -c 'bryhadyr:begin' "$G")" = 1 ]
+python3 scripts/install_global_md.py --lang uk "$T/global/uk.md" >/dev/null && grep -q 'Дії = дочірня сесія' "$T/global/uk.md"
+printf '<!-- bryhadyr:begin -->\nno end\n' > "$T/global/broken.md"
+! python3 scripts/install_global_md.py "$T/global/broken.md" 2>/dev/null           # a half-marked file is refused
+grep -q 'no end' "$T/global/broken.md"
 
 echo "== Stop and PreToolUse hooks"
 bash plugin/hooks/test-stop-check.sh
