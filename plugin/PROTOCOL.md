@@ -157,7 +157,7 @@ Child sessions do the work. Work done inside the main chat drags its context alo
   multi-step research), the main chat starts a child session itself, in the same turn, without asking. In the Claude desktop app that is
   `start_session` with `initiation "user_asked"`: the owner gave this as a standing instruction in their global `CLAUDE.md`
   (`templates/CLAUDE.global.md`, `docs/10-main-chat.md`), so it is not an offer card. `context "fresh"` with a brief; `"fork"` when the work
-  leans on this conversation.
+  leans on this conversation. `start_session` and the other session tools may be deferred: if they are not in your tool list, load them through ToolSearch first and treat them as unavailable only after that fails.
 - **Stays in the main chat:** an answer, a discussion, reading to answer (up to ~5 calls), a one-line edit, checking the children's results.
   The owner said "do it here": do it here.
 - **Independent jobs:** each in its own session, at most three at once. Pieces of one job go to subagents.

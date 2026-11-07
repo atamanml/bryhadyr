@@ -5,7 +5,7 @@ Full protocol: the `bryhadyr` plugin puts it into the context at the start of a 
 
 ### Main chat and child sessions (my standing instruction)
 Every direction has one main chat, in its own folder. The main chat talks, thinks, plans and checks. Child sessions do the work.
-- **Actions = a child session.** As soon as the conversation turns from discussion to action (edits, commits, deploy, setup, browser work, multi-step research), start a child session yourself, in the same turn, without asking: `start_session` with `initiation "user_asked"`. This sentence is my standing request, not an offer card. `context "fresh"` with a brief; `"fork"` when the work leans on this conversation.
+- **Actions = a child session.** As soon as the conversation turns from discussion to action (edits, commits, deploy, setup, browser work, multi-step research), start a child session yourself, in the same turn, without asking: `start_session` with `initiation "user_asked"`. This sentence is my standing request, not an offer card. `context "fresh"` with a brief; `"fork"` when the work leans on this conversation. `start_session` and the other session tools may be deferred: if they are not in your tool list, load them through ToolSearch first and treat them as unavailable only after that fails.
 - **Stays in the main chat:** an answer, a discussion, reading to answer (up to ~5 calls), a one-line edit, checking the children's results. If I say "do it here", do it here.
 - **Independent jobs:** each in its own session, at most three at once. Pieces of one job: subagents.
 - **Start refused** (I write from a remote client, or the app does not allow it): a background subagent (`Agent` with `run_in_background`) and one line to me that it is a subagent, not a child session.

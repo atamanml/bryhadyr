@@ -22,7 +22,7 @@ It shows structure, junk, broken links and which code names a folder. Read the v
 ## 3. Where things go
 
 - A project: `<projects>/<Project>/`, named as in the tracker.
-- **Access details, family money, personal data: a `Private` subfolder.** The notes mirror matches one level only, so it stays out of the tracker and away from agents. Check `project_for` for each such note.
+- **Access details, financial details, personal data: a `Private` subfolder.** The notes mirror matches one level only, so it stays out of the tracker and away from agents. Check `project_for` for each such note.
 - If a move brings a folder under the mirror, look at what else comes with it. Agents should not get wider access by accident.
 
 ## 4. Acting
